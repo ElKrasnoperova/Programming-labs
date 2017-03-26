@@ -1,3 +1,5 @@
+package ru.ifmo.se.programming;
+
 import java.util.ArrayList;
 import java.util.List;
 

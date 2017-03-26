@@ -1,6 +1,7 @@
+package ru.ifmo.se.programming;
+
 public class Main {
 	public static void main(String[] args){
-		
 		Person gedni = new Person("gedni", 18, 100);
 		Person person1 = new Person ("person1", 40, 100);
 		Person person2 = new Person ("person2", 14, 100);

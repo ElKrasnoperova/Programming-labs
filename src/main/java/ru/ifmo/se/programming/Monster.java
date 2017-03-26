@@ -1,3 +1,5 @@
+package ru.ifmo.se.programming;
+
 public class Monster extends Creature {
 
 		protected int ordinariness;

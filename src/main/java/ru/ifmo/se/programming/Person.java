@@ -1,3 +1,5 @@
+package ru.ifmo.se.programming;
+
 public class Person extends Creature {
 
 		protected Complex fear;

@@ -1,3 +1,5 @@
+package ru.ifmo.se.programming;
+
 public abstract class Creature {
 
 		protected String name;

@@ -1,8 +1,8 @@
 public class Person extends Creature {
 
 		protected Complex fear;
-		public boolean torpor;
-		public boolean feelSmell;
+		protected boolean torpor;
+		protected boolean feelSmell;
 		
 		public Person(String name, int age, int health) {
 			super(name, age, health);
@@ -38,5 +38,13 @@ public class Person extends Creature {
 		
 		public void changeFeelSmell(boolean isSmell) {
 			this.feelSmell = isSmell;
+		}
+		
+		public Complex getFear() {
+			return fear;
+		}
+
+		public boolean isTorpor() {
+			return torpor;
 		}
 	}

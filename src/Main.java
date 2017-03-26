@@ -13,16 +13,12 @@ public class Main {
 		person2.changePlace(place0);
 		person3.changePlace(place0);
 		monster0.changePlace(place0);
-		monster0.fright (person2);
-		monster0.fright(person3);
 		person1.changePlace(place1);
 		monster1.changePlace(place1);
 		gedni.changePlace(place1);
 		gedni.makeCataclysm(place1);
 		person2.changePlace(place1);
 		person3.changePlace(place1);
-		monster1.fright(person2);
-		monster1.fright(person3);
 		monster1.stupefy(person2);
 		monster1.stupefy(person3);
 	}

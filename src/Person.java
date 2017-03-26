@@ -1,8 +1,8 @@
 public class Person extends Creature {
 
 		protected Complex fear;
-		protected boolean torpor;
-		protected boolean feelSmell;
+		public boolean torpor;
+		public boolean feelSmell;
 		
 		public Person(String name, int age, int health) {
 			super(name, age, health);

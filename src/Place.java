@@ -25,9 +25,10 @@ public class Place {
 	public void addPerson(Person person) {
 		this.people.add(person);
 		for (Monster m: monsters) {
+			m.fright(person);
 			if(m.isSmell()) {
 				person.changeFeelSmell(true);
-				break;
+				m.stupefy(person);
 			}
 		}
 	}

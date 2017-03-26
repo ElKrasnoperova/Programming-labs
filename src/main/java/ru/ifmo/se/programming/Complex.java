@@ -16,7 +16,7 @@ public class Complex {
     public String toString() {
         if (im == 0) return re + "";
         if (re == 0) return im + "i";
-        if (im <  0) return re + " - " + (-im) + "i";
+        if (im < 0) return re + " - " + (-im) + "i";
         return re + " + " + im + "i";
     }
 
@@ -66,13 +66,18 @@ public class Complex {
 
     // return a new ru.ifmo.se.programming.Complex object whose value is the reciprocal of this
     public Complex reciprocal() {
-        double scale = re*re + im*im;
+        double scale = re * re + im * im;
         return new Complex(re / scale, -im / scale);
     }
 
     // return the real or imaginary part
-    public double re() { return re; }
-    public double im() { return im; }
+    public double re() {
+        return re;
+    }
+
+    public double im() {
+        return im;
+    }
 
     // return a / b
     public Complex divides(Complex b) {
@@ -99,7 +104,6 @@ public class Complex {
     public Complex tan() {
         return sin().divides(cos());
     }
-    
 
 
     // a static version of plus

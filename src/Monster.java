@@ -36,7 +36,7 @@ public class Monster extends Creature {
 
 	@Override
 	public void changePlace(Place place) {
-		this.place.removeMonster(this);
+		if(this.place != null) this.place.removeMonster(this);
 		super.changePlace(place);
 		place.addMonster(this);
 	}

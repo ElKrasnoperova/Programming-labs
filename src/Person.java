@@ -32,7 +32,7 @@ public class Person extends Creature {
 
 	@Override
 	public void changePlace(Place place) {
-		this.place.removePerson(this);
+		if(this.place != null) this.place.removePerson(this);
 		super.changePlace(place);
 		place.addPerson(this);
 	}

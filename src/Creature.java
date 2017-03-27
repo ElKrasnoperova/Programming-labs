@@ -12,6 +12,7 @@ public abstract class Creature {
 		this.age = age;
 		this.health = health;
 		this.alive = true;
+		this.place = null;
 	}
 
 	public void changePlace(Place place) {

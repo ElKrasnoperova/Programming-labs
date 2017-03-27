@@ -22,7 +22,7 @@ public class Place {
 		}
 	}
 
-	public void addPerson(Person person) {
+	protected void addPerson(Person person) {
 		this.people.add(person);
 		for (Monster m: monsters) {
 			m.fright(person);
@@ -33,15 +33,14 @@ public class Place {
 		}
 	}
 
-	public void addMonster(Monster monster) {
+	protected void addMonster(Monster monster) {
 		this.monsters.add(monster);
 	}
-	
-	public void removePerson(Person person) {
-		this.people.remove(person);
-	}
-	
-	public void removeMonster(Monster monster) {
-		this.monsters.remove(monster);
+
+	protected void removeCreature(Creature creature) {
+		if(creature.getClass().getName() == "Person")
+			this.people.remove(creature);
+		else
+			this.monsters.remove(creature);
 	}
 }

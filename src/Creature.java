@@ -16,6 +16,7 @@ public abstract class Creature {
 	}
 
 	public void changePlace(Place place) {
+		if(this.place != null) this.place.removeCreature(this);
 		this.place = place;
 	}
 

@@ -19,7 +19,8 @@ public class Monster extends Creature {
 	}
 
 	public void stupefy(Person person) {
-		person.frightened(new Complex(100, 100));
+		if(this.smell)
+			person.frightened(new Complex(100, 0));
 	}
 
 	@Override
@@ -36,7 +37,6 @@ public class Monster extends Creature {
 
 	@Override
 	public void changePlace(Place place) {
-		if(this.place != null) this.place.removeMonster(this);
 		super.changePlace(place);
 		place.addMonster(this);
 	}

@@ -36,4 +36,12 @@ public class Place {
 	public void addMonster(Monster monster) {
 		this.monsters.add(monster);
 	}
+	
+	public void removePerson(Person person) {
+		this.people.remove(person);
+	}
+	
+	public void removeMonster(Monster monster) {
+		this.monsters.remove(monster);
+	}
 }

@@ -13,13 +13,13 @@ public class Person extends Creature {
 
 	public void frightened(Complex force){
 		this.fear = this.fear.plus(force);
-		if(this.fear.re() >= 100) {
+		if(this.fear.im() > 0) {
 			this.torpor = true;
 		}
 	}
 
 	public void makeCataclysm(Place place) {
-		place.setCataclysm();
+		if(this.alive) place.setCataclysm();
 	}
 
 	@Override

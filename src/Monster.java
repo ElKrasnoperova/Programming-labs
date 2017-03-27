@@ -7,20 +7,16 @@ public class Monster extends Creature {
 
 	public Monster(String name, int age, 
 			int health, int ordinariness, 
-			Complex force, int numberOfLife) {
+			int force, int numberOfLife) {
 		super(name, age, health);
 		this.ordinariness = ordinariness;
-		this.force = force;
+		this.force = new Complex(force, 0);
 		this.numberOfLife = numberOfLife;
 	}
 
 	public void fright(Person person) {
-		person.frightened(this.force);
-	}
-
-	public void stupefy(Person person) {
-		if(this.smell)
-			person.frightened(new Complex(100, 0));
+		if(this.alive)
+			person.frightened(this.force);
 	}
 
 	@Override
@@ -29,6 +25,7 @@ public class Monster extends Creature {
 		if(this.health <= 0) {
 			this.numberOfLife--;
 			this.smell = true;
+			this.force = new Complex(-1, 1);
 			if(this.numberOfLife == 0) {
 				this.alive = false;
 			}

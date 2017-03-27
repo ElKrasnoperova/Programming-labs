@@ -28,7 +28,6 @@ public class Place {
 			m.fright(person);
 			if(m.isSmell()) {
 				person.changeFeelSmell(true);
-				m.stupefy(person);
 			}
 		}
 	}

@@ -1,5 +1,5 @@
 public class Main {
-	public static void main(String[] args){
+	public static void main(String[] args) throws MoreThanOneException{
 
 		Person gedni = new Person("gedni", 18, 100);
 		Person person1 = new Person ("person1", 40, 100);

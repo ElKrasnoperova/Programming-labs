@@ -1,4 +1,4 @@
-public class Person extends Creature {
+public class Person extends Creature implements Traveler {
 
 	protected Complex fear;
 	protected boolean torpor;
@@ -19,20 +19,24 @@ public class Person extends Creature {
 	}
 
 	public void makeCataclysm(Place place) {
-		if(this.alive) place.setCataclysm();
+		if(this.alive)  {
+			place.setCataclysmForPerson();
+			place.setCataclysmForMonster();
+		}
 	}
 
 	@Override
 	public void changeHealth(int health) {
-		super.changeHealth(health);
 		if(this.health <= 0) {
 			this.alive = false;
 		}
 	}
 
 	@Override
-	public void changePlace(Place place) {
-		super.changePlace(place);
+	public void changePlace(Place place) throws MoreThanOneException {
+		if(!alive) return;
+		if(this.place != null) this.place.removeCreature(this);
+		this.place = place;
 		place.addPerson(this);
 	}
 
@@ -46,5 +50,14 @@ public class Person extends Creature {
 
 	public boolean isTorpor() {
 		return torpor;
+	}
+	
+	public String getAge() {
+		class HowOld {
+			public String toString(){
+				return "Age of a character is " + age;
+			}
+		}
+		return new HowOld().toString();	
 	}
 }

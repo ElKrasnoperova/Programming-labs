@@ -14,14 +14,4 @@ public abstract class Creature {
 		this.alive = true;
 		this.place = null;
 	}
-
-	public void changePlace(Place place) {
-		if(!alive) return;
-		if(this.place != null) this.place.removeCreature(this);
-		this.place = place;
-	}
-
-	public void changeHealth(int health) {
-		this.health = health;
-	}
 }

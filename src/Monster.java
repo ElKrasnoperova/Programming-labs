@@ -46,7 +46,7 @@ public class Monster extends Creature implements Traveler {
 	@Override
 	public void changePlace(Place place) throws MoreThanOneException {
 		if(!alive) return;
-		if(this.place != null) this.place.removeCreature(this);
+		if(this.place != null) this.place.removeMonster(this);
 		this.place = place;
 		place.addMonster(this);
 	}

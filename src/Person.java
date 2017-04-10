@@ -34,7 +34,7 @@ public class Person extends Creature implements Traveler {
 	@Override
 	public void changePlace(Place place) throws MoreThanOneException {
 		if(!alive) return;
-		if(this.place != null) this.place.removeCreature(this);
+		if(this.place != null) this.place.removePerson(this);
 		this.place = place;
 		place.addPerson(this);
 	}

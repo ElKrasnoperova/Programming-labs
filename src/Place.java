@@ -113,11 +113,12 @@ public class Place implements Location {
 		this.cemetry.addCreature(p);
 	}
 
-	protected void removeCreature(Creature creature) {
-		if(creature.getClass().getName() == "Person")
-			this.people.remove(creature);
-		else
-			this.monsters.remove(creature);
+	protected void removePerson (Person person) {
+		this.people.remove(person);
+	}
+	
+	protected void removeMonster (Monster monster) {
+		this.monsters.remove(monster);
 	}
 
 	

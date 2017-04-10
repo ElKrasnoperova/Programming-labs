@@ -23,7 +23,6 @@ public class Monster extends Creature implements Traveler {
 				return true;
 			}
 		};
-		
 		this.force = fear.getPower();
 	}
 	

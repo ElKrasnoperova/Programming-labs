@@ -16,7 +16,7 @@ public class Main {
 		person1.changePlace(place1);
 		monster1.changePlace(place1);
 		gedni.changePlace(place1);
-		gedni.makeCataclysm(place1);
+		gedni.makeCataclysm(place1, Place.Cataclysm.FLOOD);
 		person2.changePlace(place1);
 		person3.changePlace(place1);
 		monster1.fright(person2);

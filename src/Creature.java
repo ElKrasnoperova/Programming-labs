@@ -14,4 +14,16 @@ public abstract class Creature {
 		this.alive = true;
 		this.place = null;
 	}
+	
+	public int getHealth() {
+		return this.health;
+	}
+	
+	public void setName(String name) {
+		this.name = name;
+	}
+	
+	public String getName() {
+		return this.name;
+	}
 }

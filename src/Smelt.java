@@ -1,4 +1,3 @@
-
 public class Smelt {
 	 protected String title;
 	 protected boolean isPleasure;

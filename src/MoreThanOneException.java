@@ -5,6 +5,4 @@ public class MoreThanOneException extends Exception {
 	public String getMessage(){
 		return message;
 	}
-	
-	
 }

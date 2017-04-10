@@ -2,28 +2,27 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Place implements Location {
-	protected String name;
 	protected boolean isCataclysmed;
+	protected Cataclysm cataclysmTitle;
+	protected Cemetry cemetry = new Cemetry(100, 15);
 	protected List<Person> people = new ArrayList<Person>();
 	protected List<Monster> monsters = new ArrayList<Monster>();
-	protected Cataclysm cataclysmTitle;
+	protected String name;
 
 	public Place(String name) {
 		this.name = name;		
 		this.isCataclysmed = false;
 	}
 
-	public void setCataclysmForPerson() {
-		this.isCataclysmed = true;
-		for (Person p: people) {
-			p.changeHealth(0);
+	protected void addMonster(Monster monster) throws MoreThanOneException {
+		try {
+			if(this.monsters.contains(monster)) {
+				throw new MoreThanOneException();
+			}
+			this.monsters.add(monster);
 		}
-	}
-	
-	public void setCataclysmForMonster() {
-		this.isCataclysmed = true;
-		for (Monster m: monsters) {
-			m.changeHealth(0);
+		catch (ArrayOverflowException e) {
+			e.getMessage();
 		}
 	}
 
@@ -43,18 +42,75 @@ public class Place implements Location {
 		catch (ArrayOverflowException e) {
 			e.getMessage();
 		}
+	}	
+	
+	public int getCountOfCitizens () {
+		return this.people.size();
 	}
-
-	protected void addMonster(Monster monster) throws MoreThanOneException {
-		try {
-			if(this.monsters.contains(monster)) {
-				throw new MoreThanOneException();
+	
+	public String getCataclysmName() {
+		return this.cataclysmTitle.name();
+	}
+	
+	public void setCataclysm(Cataclysm c) {
+		this.cataclysmTitle = c;
+		this.isCataclysmed = true;
+		switch (c) {
+		case INFECTION: 
+			for (Person p: people) {
+				this.killPerson(p);
 			}
-			this.monsters.add(monster);
+			break;
+		case EARTHQUAKE:
+			for (Person p: people) {
+				p.changeHealth((int)(p.getHealth()*(0.6)));
+			}
+			for (Monster m: monsters) {
+				m.changeHealth((int)(m.getHealth()*(0.4)));
+			}
+			break;
+		case FLOOD: 
+			for (Person p: people) {
+				this.killPerson(p);
+			}
+			for (Monster m: monsters) {
+				this.killMonster(m);
+			}
+			break;
+		case ATTACOFCLONES: 
+			for (Person p: people) {
+				p.setName("Dart Veider");
+			}
+			for (Monster m: monsters) {
+				m.setName("Dart Veider");
+			}
+			break;
+		case REVOLUTION: 
+			for (Person p: people) {
+				if (p.getName().equals("Naval'ny")) {
+					this.killPerson(p);
+				}
+			}
+			break;
 		}
-		catch (ArrayOverflowException e) {
-			e.getMessage();
-		}
+	}
+	
+	public String getName() {
+		return this.name;
+	}
+	
+	public void setName(String string) {
+		this.name = string;
+	}
+	
+	private void killMonster(Monster m) {
+		m.changeHealth(0);
+		this.cemetry.addCreature(m);
+	}
+	
+	private void killPerson(Person p) {
+		p.changeHealth(0);
+		this.cemetry.addCreature(p);
 	}
 
 	protected void removeCreature(Creature creature) {
@@ -63,68 +119,47 @@ public class Place implements Location {
 		else
 			this.monsters.remove(creature);
 	}
+
 	
-	public void setName(String string) {
-		this.name = string;
-	}
-	
-	public String getName() {
-		return this.name;
-	}
-	
-	public int getCountOfCitizens () {
-		return this.people.size();
-	}
-	
-	static enum Cataclysm {
-		INFECTION,
-		EARTHQUAKE,
-		FLOOD,
-		ATTACOFCLONES,
-		REVOLUTION;
+	public static enum Cataclysm {
+		ATTACOFCLONES("Congratulations! Now your name is Dart Veider"),
+		EARTHQUAKE("Little jolting. (or not little)"),
+		FLOOD("Do you want to drink? Bazinga"),
+		INFECTION("This is a chemical infection"),
+		REVOLUTION("Naval'ny in da house");
 		
 		private String description;
-		private String destroyTo;
 		
-		public String getDescription() {
-			return this.description;
+		private Cataclysm(String description) {
+			this.description = description;
 		}
-		
-		public void destroy(Place place){
-			switch (destroyTo) {
-				case "person":  place.setCataclysmForPerson();
-				break;
-				case "monster": place.setCataclysmForMonster();
-				break;
-				default: System.out.println("Invalid destroyTo");
-				break;
-				}
+
+		@Override
+		public String toString() {
+			return description;	
 		}
 	}
+	
 	
 	class Cemetry {
 		private int countOfGraves;
-		private int occupiedGraves;
 		private int depthOfGrave;
+		private int occupiedGraves;
+		private List<Creature> deadCreatures = new ArrayList<Creature>();
 		
-		public Cemetry (int countOfGraves, int occupiedGraves, int depthOfGrave) {
+		public Cemetry (int countOfGraves, int depthOfGrave) {
 			this.countOfGraves = countOfGraves;
-			this.occupiedGraves = occupiedGraves;
 			this.depthOfGrave = depthOfGrave;
+			this.occupiedGraves = 0;
 		}
 		
-		public void addPerson() {
+		public String addCreature(Creature c) {
 			if (this.occupiedGraves < this.countOfGraves){
-				this.occupiedGraves++;
+				this.occupiedGraves += 1;
+				this.deadCreatures.add(c);
+				return "Yeah, you're with us!";
 			}
-			else System.out.println("Sorry, you can't visit our cemetry");
-		}
-		
-		public void addMonster() {
-			if (this.occupiedGraves < this.countOfGraves){
-				this.occupiedGraves += 2;
-			}
-			else System.out.println("Sorry, you can't visit our cemetry");
-		}
+			else return "Sorry, you can't visit our cemetry";
+		}		
 	}
 }

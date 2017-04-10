@@ -18,10 +18,9 @@ public class Person extends Creature implements Traveler {
 		}
 	}
 
-	public void makeCataclysm(Place place) {
+	public void makeCataclysm(Place place, Place.Cataclysm c) {
 		if(this.alive)  {
-			place.setCataclysmForPerson();
-			place.setCataclysmForMonster();
+			place.setCataclysm(c);
 		}
 	}
 

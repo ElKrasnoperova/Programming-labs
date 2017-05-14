@@ -53,5 +53,5 @@ public class Monster extends Creature implements Traveler {
 
 	public boolean isSmell() {
 		return this.smell;
-	}	
+	}
 }

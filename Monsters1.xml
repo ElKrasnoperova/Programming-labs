@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<Monsters>
+<Monster id="1">
+<name>MonsterX</name>
+<age>18</age>
+<health>100</health>
+<ordinariness>0</ordinariness>
+<force>10</force>
+<numberOfLife>1</numberOfLife>
+</Monster>
+</Monsters>

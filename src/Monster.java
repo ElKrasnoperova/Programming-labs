@@ -13,11 +13,11 @@ public class Monster extends Creature implements Traveler {
 		this.numberOfLife = numberOfLife;
 		
 		Fear fear = new Fear() {
-			public Complex getPower() {
-				return new Complex (force,0);
-			}
 			public String getName() {
 				return "Arrrrrrr";
+			}
+			public Complex getPower() {
+				return new Complex (force,0);
 			}
 			public boolean isSound(){
 				return true;
@@ -26,11 +26,6 @@ public class Monster extends Creature implements Traveler {
 		this.force = fear.getPower();
 	}
 	
-	public void fright(Person person) {
-		if(this.alive)
-			person.frightened(this.force);
-	}
-
 	@Override
 	public void changeHealth(int health) {
 		if(this.health <= 0) {
@@ -49,6 +44,11 @@ public class Monster extends Creature implements Traveler {
 		if(this.place != null) this.place.removeMonster(this);
 		this.place = place;
 		place.addMonster(this);
+	}
+
+	public void fright(Person person) {
+		if(this.alive)
+			person.frightened(this.force);
 	}
 
 	public boolean isSmell() {

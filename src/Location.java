@@ -1,5 +1,5 @@
 public interface Location {
-	void setName(String name);
-	String getName();
 	int getCountOfCitizens();
+	String getName();
+	void setName(String name);
 }

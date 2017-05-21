@@ -1,9 +1,9 @@
 import java.io.IOException;
-
 import java.text.ParseException;
 import java.util.Scanner;
 
 import javax.xml.parsers.ParserConfigurationException;
+
 import org.xml.sax.SAXException;
 
 import com.google.gson.Gson;
@@ -11,7 +11,21 @@ import com.google.gson.JsonObject;
 
 public class Main {
 	public static void main(String[] args) throws MoreThanOneException, IOException, ParseException, ParserConfigurationException, SAXException {
-
+		
+		Collection c = new Collection();
+		
+		Runtime.getRuntime().addShutdownHook(new Thread() {
+			public void run() {
+				try {
+					FileWorker.write(c.path, c);
+					System.out.println("Programm was closed :(");
+				}
+				catch (Exception e) {
+					System.out.println(e.getLocalizedMessage());
+				}
+			}
+		});
+		
 		Person gedni = new Person("gedni", 18, 100);
 		Person person1 = new Person ("person1", 40, 100);
 		Person person2 = new Person ("person2", 14, 100);
@@ -33,26 +47,28 @@ public class Main {
 		person3.changePlace(place1);
 		monster1.fright(person2);
 		monster1.fright(person3);
-	
-		Collection c = new Collection();	
+		
 		Scanner inScanner = new Scanner(System.in);
+		String fileName = null;
 		boolean fill = false;
 		
 		while(fill == false) {
 			System.out.print("Enter file's name: ");
-			String fileName = inScanner.nextLine();
-			if(fileName.equals("")) {
-				System.out.println("Path is empty");
-				continue;
-			}
-			c.setPath(fileName);
-			try {
-				fill = c.fill();
-			}
-			catch (NullPointerException e) {
+			if(inScanner.hasNextLine()){
+				fileName = inScanner.nextLine();
+			
+				if (fileName.equals("d")) {
+					fileName = "D:\\workspace\\Laba2\\Monsters1.xml";
+				} 
+				else if (fileName.isEmpty()){
+					System.out.println("File's name is empty, try again");
+					continue;
+				}
+				c.setPath(fileName);
+				fill = FileWorker.read(fileName, c);
 			}
 		}
-		
+	
 		Gson gson = new Gson();
 		boolean active = true;
 		String name;
@@ -62,16 +78,19 @@ public class Main {
 		int force; 
 		int numberOfLife;
 		while (active == true) {
-			System.out.println("Enter your command info, remove_greater, add_if_max, add, add_if_min");
+			System.out.println("Enter your command info, remove_greater, add_if_max, add, add_if_min, exit");
 			name = "MonsterX";
 			age = 18;
 			health = 100; 
 			ordinariness = 0;
 			force = 10; 
 			numberOfLife = 1;
+			
 			String command = "";
-			String inputString;
-			inputString = inScanner.nextLine();
+			String inputString = null;
+			if(inScanner.hasNextLine()){
+				inputString = inScanner.nextLine();
+			}
 			String[] split = inputString.split("(?:\\b\\s)");
 			command = split[0];	
 			
@@ -123,8 +142,12 @@ public class Main {
 				case "add_if_min":
 					c.addIfMin(m);
 					break;
-				case "q": 
-					c.saveToFile();
+				case "exit": 
+					FileWorker.write(fileName, c);
+					active = false;
+					break;
+				case "q":
+					FileWorker.write(fileName, c);
 					active = false;
 					break;
 				default:

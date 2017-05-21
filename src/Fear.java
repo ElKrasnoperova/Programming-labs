@@ -1,5 +1,5 @@
 public interface Fear {
-	Complex getPower();
 	String getName();
+	Complex getPower();
 	boolean isSound();
 }

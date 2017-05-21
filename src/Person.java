@@ -11,17 +11,8 @@ public class Person extends Creature implements Traveler {
 		this.feelSmell = false;
 	}
 
-	public void frightened(Complex force){
-		this.fear = this.fear.plus(force);
-		if(this.fear.im() > 0) {
-			this.torpor = true;
-		}
-	}
-
-	public void makeCataclysm(Place place, Place.Cataclysm c) {
-		if(this.alive)  {
-			place.setCataclysm(c);
-		}
+	public void changeFeelSmell(boolean isSmell) {
+		this.feelSmell = isSmell;
 	}
 
 	@Override
@@ -39,8 +30,20 @@ public class Person extends Creature implements Traveler {
 		place.addPerson(this);
 	}
 
-	public void changeFeelSmell(boolean isSmell) {
-		this.feelSmell = isSmell;
+	public void frightened(Complex force){
+		this.fear = this.fear.plus(force);
+		if(this.fear.im() > 0) {
+			this.torpor = true;
+		}
+	}
+
+	public String getAge() {
+		class HowOld {
+			public String toString(){
+				return "Age of a character is " + age;
+			}
+		}
+		return new HowOld().toString();	
 	}
 
 	public Complex getFear() {
@@ -51,12 +54,9 @@ public class Person extends Creature implements Traveler {
 		return torpor;
 	}
 	
-	public String getAge() {
-		class HowOld {
-			public String toString(){
-				return "Age of a character is " + age;
-			}
+	public void makeCataclysm(Place place, Place.Cataclysm c) {
+		if(this.alive)  {
+			place.setCataclysm(c);
 		}
-		return new HowOld().toString();	
 	}
 }

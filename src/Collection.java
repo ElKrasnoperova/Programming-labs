@@ -18,7 +18,7 @@ public class Collection {
 		}
 	};
 	protected String path;
-	private Date date;
+	protected Date date;
 	private LinkedHashSet<Monster> monsterCollection;
 	
 	public Collection() {
@@ -33,7 +33,6 @@ public class Collection {
 	public void add(Monster m) {
 			monsterCollection.add(m);
 			FileWorker.write(this.path, this);
-			System.out.println(m.name + " was added to the collection");
 	}	
 
 /**
@@ -50,10 +49,7 @@ public class Collection {
 			max=true;
 			monsterCollection.add(m);
 			FileWorker.write(this.path, this);
-			System.out.println(m.name + " was added to the collection");
-			return max;
 		}
-		else System.out.println("Nobody was added to the collection");
 		return max;
 	}
 
@@ -64,26 +60,15 @@ public class Collection {
  */
 	public boolean addIfMin(Monster m){		
     	boolean min=false;
-		Monster m1 = Collections.max(monsterCollection, Collection.monComp);
+		Monster m1 = Collections.min(monsterCollection, Collection.monComp);
 		if(monComp.compare(m1,m) > 0) {
 			min=true;
 			monsterCollection.add(m);
 			FileWorker.write(this.path, this);
-			System.out.println(m.name + " was added to the collection");
-			return min;
 		}
-		else System.out.println("Nobody was added to the collection");
 		return min;
 	}
 	
-/**
- * Method has printed information (type, size, initialization date) about collection
- */
-	public void getInfo() {
-		String type = this.monsterCollection.getClass().getName();
-		int count = this.monsterCollection.size();
-		System.out.println("Type: " + type + "\nSize: " + count + "\nDate: " + this.date);
-	}
 	
 	public LinkedHashSet<Monster> getMColletion() {
 		return this.monsterCollection;
@@ -95,13 +80,15 @@ public class Collection {
  * @param force Monster's force
  */
 
-	public void removeGreater (int force) {
+	public int removeGreater (int force) {
+		int rg=0;
+		int current = this.monsterCollection.size();
 		Predicate<Monster> monsterPredecate = m -> m.force.re() > force;
 		if (this.monsterCollection.removeIf(monsterPredecate)) {
 			FileWorker.write(this.path, this);
-			System.out.println("Monsters have been removed");
+			rg=current-this.monsterCollection.size();
 		}
-		else System.out.println("Monsters haven't been removed");	
+		return rg;
 	}
 	
 /**

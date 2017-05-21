@@ -1,4 +1,4 @@
-public class Monster extends Creature implements Traveler {
+public class Monster extends Creature implements Traveler, Comparable<Monster> {
 
 	protected int ordinariness;
 	protected Complex force;
@@ -53,5 +53,10 @@ public class Monster extends Creature implements Traveler {
 
 	public boolean isSmell() {
 		return this.smell;
+	}
+
+	@Override
+	public int compareTo(Monster o) {
+		return (((int)o.force.re()-(int)this.force.re()));
 	}
 }

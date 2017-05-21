@@ -77,6 +77,9 @@ public class FileWorker {
  * @throws ParserConfigurationException
  * @throws SAXException
  */	
+	
+	public static boolean isRead = false;
+	
 	public static boolean read(String path, Collection c) {
 		InputStream inputStream = null;		
 		Document doc = null;
@@ -105,6 +108,7 @@ public class FileWorker {
 				}
 			}
 			inputStreamReader.close();
+			inputStream.close();
 			builder = factory.newDocumentBuilder();
 			doc = builder.parse(new InputSource(new StringReader(fileString)));
 		} catch (ParserConfigurationException | IOException | SAXException e) {
@@ -144,6 +148,9 @@ public class FileWorker {
 	            c.getMColletion().add(monster);
 	        }
 	    } 
+	    if(c.getMColletion().size() == list.getLength()) {
+	    	FileWorker.isRead = true;
+	    }
 	    return true;
 	}
 
@@ -177,6 +184,9 @@ public class FileWorker {
 	        byte []array=baos.toByteArray();
 	        bos.write(array);
 	        bos.flush();	
+	        baos.close();
+	        bos.close();
+	        
 	    } catch (Exception e) {
 	        System.out.println(e.getLocalizedMessage());
 	    }

@@ -11,13 +11,14 @@ import com.google.gson.JsonObject;
 
 public class Main {
 	public static void main(String[] args) throws MoreThanOneException, IOException, ParseException, ParserConfigurationException, SAXException {
-		
+			
 		Collection c = new Collection();
 		
 		Runtime.getRuntime().addShutdownHook(new Thread() {
 			public void run() {
 				try {
-					FileWorker.write(c.path, c);
+					if(FileWorker.isRead)
+						FileWorker.write(c.path, c);
 					System.out.println("Programm was closed :(");
 				}
 				catch (Exception e) {
@@ -52,20 +53,29 @@ public class Main {
 		String fileName = null;
 		boolean fill = false;
 		
-		while(fill == false) {
-			System.out.print("Enter file's name: ");
-			if(inScanner.hasNextLine()){
-				fileName = inScanner.nextLine();
-			
-				if (fileName.equals("d")) {
-					fileName = "D:\\workspace\\Laba2\\Monsters1.xml";
-				} 
-				else if (fileName.isEmpty()){
-					System.out.println("File's name is empty, try again");
-					continue;
-				}
-				c.setPath(fileName);
-				fill = FileWorker.read(fileName, c);
+		if (args.length > 0) {
+			fileName = args[0];
+			c.setPath(fileName);
+			fill = FileWorker.read(fileName, c);
+			System.out.println(fileName);
+		}
+		
+		if(fileName == null || fill == false){			
+			while(fill == false) {
+				System.out.print("Enter file's name: ");
+				if(inScanner.hasNextLine()){
+					fileName = inScanner.nextLine();
+				
+					if (fileName.equals("d")) {
+						fileName = "D:\\workspace\\Laba2\\Monsters2.xml";
+					} 
+					else if (fileName.isEmpty()){
+						System.out.println("File's name is empty, try again");
+						continue;
+					}
+					c.setPath(fileName);
+					fill = FileWorker.read(fileName, c);
+				}	
 			}
 		}
 	
@@ -125,22 +135,32 @@ public class Main {
 			
 			switch (command) {
 				case "info": 
-					c.getInfo();
+					String type = c.getMColletion().getClass().getName();
+					int count = c.getMColletion().size();
+					System.out.println("Type: " + type + "\nSize: " + count + "\nDate: " + c.date);
 					break;
 				case "remove_greater":
-					c.removeGreater((int)m.force.re());
-					break;
-				case "rg":
-					c.removeGreater((int)m.force.re());
+					int s = c.removeGreater((int)m.force.re());
+					if (s != 0)
+						System.out.println(s + " monsters have been removed");
+					else 
+						System.out.println("Monsters haven't been removed");	
 					break;
 				case "add_if_max":
-					c.addIfMax(m);
+					if (c.addIfMax(m)) 
+						System.out.println(m.name + " was added to the collection");
+					else 
+						System.out.println("Nobody was added to the collection");
 					break;
 				case "add":
 					c.add(m);
+					System.out.println(m.name + " was added to the collection");
 					break;
 				case "add_if_min":
-					c.addIfMin(m);
+					if (c.addIfMin(m))
+						System.out.println(m.name + " was added to the collection");
+					else
+						System.out.println("Nobody was added to the collection");
 					break;
 				case "exit": 
 					FileWorker.write(fileName, c);

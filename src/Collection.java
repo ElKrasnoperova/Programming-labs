@@ -37,6 +37,9 @@ public class Collection {
 		this.date = new Date();
 	}
 	
+	public LinkedHashSet<Monster> getMColletion() {
+		return this.monsterCollection;
+	}
 	
 	/**
 	 * Method change path 
@@ -54,36 +57,36 @@ public class Collection {
 	 */
 	public boolean fill() {
 		boolean fill = false;	
-		InputStream inputStream = null;		
-
-		try {
-			inputStream = new FileInputStream(new File(this.path));
-		} catch (FileNotFoundException e) {
-			System.out.println(e.getLocalizedMessage());
-		}
-
-		Reader inputStreamReader = new InputStreamReader(inputStream);
-
-		int data = 0;
-		try {
-			data = inputStreamReader.read();
-		} catch (IOException e) {
-			System.out.println(e.getLocalizedMessage());
-		}
-		String fileString = "";
-		while(data != -1){
-		    fileString += (char) data;
-		    try {
-				data = inputStreamReader.read();
-			} catch (IOException e) {
-				System.out.println(e.getLocalizedMessage());
-			}
-		}
-		try {
-			inputStreamReader.close();
-		} catch (IOException e) {
-			System.out.println(e.getLocalizedMessage());
-		}
+//		InputStream inputStream = null;		
+//
+//		try {
+//			inputStream = new FileInputStream(new File(this.path));
+//		} catch (FileNotFoundException e) {
+//			System.out.println(e.getLocalizedMessage());
+//		}
+//
+//		Reader inputStreamReader = new InputStreamReader(inputStream);
+//
+//		int data = 0;
+//		try {
+//			data = inputStreamReader.read();
+//		} catch (IOException e) {
+//			System.out.println(e.getLocalizedMessage());
+//		}
+//		String fileString = "";
+//		while(data != -1){
+//		    fileString += (char) data;
+//		    try {
+//				data = inputStreamReader.read();
+//			} catch (IOException e) {
+//				System.out.println(e.getLocalizedMessage());
+//			}
+//		}
+//		try {
+//			inputStreamReader.close();
+//		} catch (IOException e) {
+//			System.out.println(e.getLocalizedMessage());
+//		}
 		
 	    DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
 	    DocumentBuilder builder = null;
@@ -94,7 +97,7 @@ public class Collection {
 		}
 	    Document doc = null;
 		try {
-			doc = builder.parse(new InputSource(new StringReader(fileString)));
+			doc = builder.parse(new InputSource(new StringReader(FileWorker.read(this.path))));
 		} catch (SAXException | IOException e) {
 			System.out.println(e.getLocalizedMessage());
 		}
@@ -222,82 +225,82 @@ public class Collection {
  * Method saves collection to file
  */
 	public void saveToFile() {
-		DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
-	    DocumentBuilder dBuilder;
-	    try {
-	        dBuilder = dbFactory.newDocumentBuilder();
-	        Document doc = dBuilder.newDocument();
-	        Element rootElement =
-	            doc.createElementNS("","Monsters");
-	        doc.appendChild(rootElement);
-	        int id = 1;
-	        for(Monster m: monsterCollection) {
-		        rootElement.appendChild(getMonster(doc, "" + id, m.getName(), "" + m.age , "" + m.health, "" + m.ordinariness, "" + (int)m.force.re(), "" + m.numberOfLife));
-		        id++;
-	        }
-	       
-	
-	        TransformerFactory transformerFactory = TransformerFactory.newInstance();
-	        Transformer transformer = transformerFactory.newTransformer();
-	        transformer.setOutputProperty(OutputKeys.INDENT, "yes");
-	        DOMSource source = new DOMSource(doc);
-	
-	        BufferedOutputStream bos = new BufferedOutputStream (new FileOutputStream(this.path));
-	        ByteArrayOutputStream baos=new ByteArrayOutputStream();
-	        StreamResult result=new StreamResult(bos);
-	        transformer.transform(source, result);
-	        byte []array=baos.toByteArray();
-	        bos.write(array);
-	        bos.flush();
-	        
-	        System.out.println("DONE");
-	
-	    } catch (Exception e) {
-	        System.out.println(e.getLocalizedMessage());
-	    }
+//		DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
+//	    DocumentBuilder dBuilder;
+//	    try {
+//	        dBuilder = dbFactory.newDocumentBuilder();
+//	        Document doc = dBuilder.newDocument();
+//	        Element rootElement =
+//	            doc.createElementNS("","Monsters");
+//	        doc.appendChild(rootElement);
+//	        int id = 1;
+//	        for(Monster m: monsterCollection) {
+//		        rootElement.appendChild(getMonster(doc, "" + id, m.getName(), "" + m.age , "" + m.health, "" + m.ordinariness, "" + (int)m.force.re(), "" + m.numberOfLife));
+//		        id++;
+//	        }
+//	       
+//	
+//	        TransformerFactory transformerFactory = TransformerFactory.newInstance();
+//	        Transformer transformer = transformerFactory.newTransformer();
+//	        transformer.setOutputProperty(OutputKeys.INDENT, "yes");
+//	        DOMSource source = new DOMSource(doc);
+//	
+//	        BufferedOutputStream bos = new BufferedOutputStream (new FileOutputStream(this.path));
+//	        ByteArrayOutputStream baos=new ByteArrayOutputStream();
+//	        StreamResult result=new StreamResult(bos);
+//	        transformer.transform(source, result);
+//	        byte []array=baos.toByteArray();
+//	        bos.write(array);
+//	        bos.flush();
+//	        
+//	        System.out.println("DONE");
+//	
+//	    } catch (Exception e) {
+//	        System.out.println(e.getLocalizedMessage());
+//	    }
 	}
 
-/**
- * Method forms element from the collection for saving it to file
- * @param doc Object for building DOM tree
- * @param id Monster's serial number
- * @param name Monster's name
- * @param age Monster's age
- * @param health Monster's health 
- * @param ordinariness Monster's ordinariness
- * @param force Monster's force (real part)
- * @param numberOfLife Monster's number of life
- * @return Monster
- */
-	private Node getMonster(Document doc, String id, String name, String age, 
-			String health, String ordinariness, 
-			String force, String numberOfLife){
-		Element monster = doc.createElement("Monster");
-		 
-		monster.setAttribute("id", id);
- 
-		monster.appendChild(getMonsterElements(doc, monster, "name", name));
-		monster.appendChild(getMonsterElements(doc, monster, "age", age));
-		monster.appendChild(getMonsterElements(doc, monster, "health", health));
-		monster.appendChild(getMonsterElements(doc, monster, "ordinariness", ordinariness));
-		monster.appendChild(getMonsterElements(doc, monster, "force", force));
-		monster.appendChild(getMonsterElements(doc, monster, "numberOfLife", numberOfLife));
- 
-        return monster;
-	}
+///**
+// * Method forms element from the collection for saving it to file
+// * @param doc Object for building DOM tree
+// * @param id Monster's serial number
+// * @param name Monster's name
+// * @param age Monster's age
+// * @param health Monster's health 
+// * @param ordinariness Monster's ordinariness
+// * @param force Monster's force (real part)
+// * @param numberOfLife Monster's number of life
+// * @return Monster
+// */
+//	private Node getMonster(Document doc, String id, String name, String age, 
+//			String health, String ordinariness, 
+//			String force, String numberOfLife){
+//		Element monster = doc.createElement("Monster");
+//		 
+//		monster.setAttribute("id", id);
+// 
+//		monster.appendChild(getMonsterElements(doc, monster, "name", name));
+//		monster.appendChild(getMonsterElements(doc, monster, "age", age));
+//		monster.appendChild(getMonsterElements(doc, monster, "health", health));
+//		monster.appendChild(getMonsterElements(doc, monster, "ordinariness", ordinariness));
+//		monster.appendChild(getMonsterElements(doc, monster, "force", force));
+//		monster.appendChild(getMonsterElements(doc, monster, "numberOfLife", numberOfLife));
+// 
+//        return monster;
+//	}
 	
-/**
- * Method forms line with one parameter of element
- * @param doc Object for building DOM tree 
- * @param element Monster
- * @param name Key 
- * @param value Value
- * @return Monster's element
- */
-
-	private static Node getMonsterElements(Document doc, Element element, String name, String value) {
-		Element node = doc.createElement(name);
-        node.appendChild(doc.createTextNode(value));
-        return node;
-    }
+///**
+// * Method forms line with one parameter of element
+// * @param doc Object for building DOM tree 
+// * @param element Monster
+// * @param name Key 
+// * @param value Value
+// * @return Monster's element
+// */
+//
+//	private static Node getMonsterElements(Document doc, Element element, String name, String value) {
+//		Element node = doc.createElement(name);
+//        node.appendChild(doc.createTextNode(value));
+//        return node;
+//    }
 }

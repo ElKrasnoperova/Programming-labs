@@ -3,15 +3,30 @@ import java.io.IOException;
 import java.text.ParseException;
 import java.util.Scanner;
 
+import javax.swing.JFrame;
 import javax.xml.parsers.ParserConfigurationException;
 import org.xml.sax.SAXException;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 
-public class Main {
+public class Main extends JFrame {
 	public static void main(String[] args) throws MoreThanOneException, IOException, ParseException, ParserConfigurationException, SAXException {
 
+		Runtime.getRuntime().addShutdownHook(new Thread() {
+			public void run() {
+				try {
+					if (args.length!=0) {
+//						saveCollection (args[0], Monsters);
+						System.out.println("Programm was closed :(");
+					}
+				}
+				catch (Exception e) {
+					System.out.println(e.getLocalizedMessage());
+				}
+			}
+		});
+		
 		Person gedni = new Person("gedni", 18, 100);
 		Person person1 = new Person ("person1", 40, 100);
 		Person person2 = new Person ("person2", 14, 100);
@@ -38,20 +53,27 @@ public class Main {
 		Scanner inScanner = new Scanner(System.in);
 		boolean fill = false;
 		
-		while(fill == false) {
+//		while(fill == false) {
+			//String fileName = null;
 			System.out.print("Enter file's name: ");
-			String fileName = inScanner.nextLine();
-			if(fileName.equals("")) {
-				System.out.println("Path is empty");
-				continue;
-			}
-			c.setPath(fileName);
 			try {
+				String fileName = inScanner.nextLine();
+			//}
+//			catch (Exception e) {
+//				System.out.println(e.getLocalizedMessage());
+//			}
+			
+//			if(fileName.equals("")) {
+//				System.out.println("Path is empty");
+//				continue;
+//			}
+			c.setPath(fileName);
+			//try {
 				fill = c.fill();
 			}
-			catch (NullPointerException e) {
+			catch (Exception e) {
 			}
-		}
+//		}
 		
 		Gson gson = new Gson();
 		boolean active = true;
@@ -62,7 +84,7 @@ public class Main {
 		int force; 
 		int numberOfLife;
 		while (active == true) {
-			System.out.println("Enter your command info, remove_greater, add_if_max, add, add_if_min");
+			System.out.println("Enter your command info, remove_greater, add_if_max, add, add_if_min, exit");
 			name = "MonsterX";
 			age = 18;
 			health = 100; 
@@ -122,6 +144,10 @@ public class Main {
 					break;
 				case "add_if_min":
 					c.addIfMin(m);
+					break;
+				case "exit": 
+					c.saveToFile();
+					active = false;
 					break;
 				case "q": 
 					c.saveToFile();

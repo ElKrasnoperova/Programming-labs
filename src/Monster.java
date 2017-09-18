@@ -1,16 +1,22 @@
+import java.awt.Color;
+
 public class Monster extends Creature implements Traveler {
 
+	public int id;
 	protected int ordinariness;
 	protected Complex force;
 	protected int numberOfLife;
 	protected boolean smell;
+	protected Color color;
 
-	public Monster(String name, int age, 
+	public Monster(int id, String name, int age, 
 			int health, int ordinariness, 
-			int force, int numberOfLife) {
+			int force, int numberOfLife, Color color) {
 		super(name, age, health);
+		this.id = id;
 		this.ordinariness = ordinariness;
 		this.numberOfLife = numberOfLife;
+		this.color = color;
 		
 		Fear fear = new Fear() {
 			public Complex getPower() {
@@ -54,4 +60,8 @@ public class Monster extends Creature implements Traveler {
 	public boolean isSmell() {
 		return this.smell;
 	}
+	
+//	public String getColor() {
+//		return color;
+//	}
 }

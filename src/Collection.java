@@ -2,6 +2,8 @@
  * @author Krasnoperova Elizaveta
  */
 
+import java.awt.Color;
+import java.awt.event.ItemEvent;
 import java.io.*;
 import java.util.Collections;
 import java.util.Comparator;
@@ -56,38 +58,7 @@ public class Collection {
 	 * @throws SAXException
 	 */
 	public boolean fill() {
-		boolean fill = false;	
-//		InputStream inputStream = null;		
-//
-//		try {
-//			inputStream = new FileInputStream(new File(this.path));
-//		} catch (FileNotFoundException e) {
-//			System.out.println(e.getLocalizedMessage());
-//		}
-//
-//		Reader inputStreamReader = new InputStreamReader(inputStream);
-//
-//		int data = 0;
-//		try {
-//			data = inputStreamReader.read();
-//		} catch (IOException e) {
-//			System.out.println(e.getLocalizedMessage());
-//		}
-//		String fileString = "";
-//		while(data != -1){
-//		    fileString += (char) data;
-//		    try {
-//				data = inputStreamReader.read();
-//			} catch (IOException e) {
-//				System.out.println(e.getLocalizedMessage());
-//			}
-//		}
-//		try {
-//			inputStreamReader.close();
-//		} catch (IOException e) {
-//			System.out.println(e.getLocalizedMessage());
-//		}
-		
+		boolean fill = false;			
 	    DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
 	    DocumentBuilder builder = null;
 		try {
@@ -98,8 +69,9 @@ public class Collection {
 	    Document doc = null;
 		try {
 			doc = builder.parse(new InputSource(new StringReader(FileWorker.read(this.path))));
-		} catch (SAXException | IOException e) {
+		} catch (SAXException | IOException | NullPointerException e) {
 			System.out.println(e.getLocalizedMessage());
+			return false;
 		}
 	    NodeList list = doc.getElementsByTagName("Monster");
 	    
@@ -122,25 +94,32 @@ public class Collection {
 	            } else if(element.getElementsByTagName("numberOfLife").item(0) == null){
 	            	System.out.println("NumberOfLife's value is not exist, change it now!");
 	            	return false;
+//	            }
+//	            	else if(element.getElementsByTagName("color").item(0) == null){
+//		            	System.out.println("Color's value is not exist, change it now!");
+//		            	return false;
 	            } 	            
 	            Monster monster = new Monster(
+	            	Integer.parseInt(element.getAttribute("id")),
 	                element.getElementsByTagName("name").item(0).getTextContent(),
 	                Integer.parseInt(element.getElementsByTagName("age").item(0).getTextContent()),
 	                Integer.parseInt(element.getElementsByTagName("health").item(0).getTextContent()),
 	                Integer.parseInt(element.getElementsByTagName("ordinariness").item(0).getTextContent()),
 	                Integer.parseInt(element.getElementsByTagName("force").item(0).getTextContent()),
-	                Integer.parseInt(element.getElementsByTagName("numberOfLife").item(0).getTextContent())
+	                Integer.parseInt(element.getElementsByTagName("numberOfLife").item(0).getTextContent()),
+//	                element.getElementsByTagName("color").item(0).getTextContent()
+	                new Color(Integer.parseInt(element.getElementsByTagName("color").item(0).getTextContent()))
 	            );
 	            this.monsterCollection.add(monster);
 	            fill=true;
 	        }
-			 if (fill == true) {
-				 System.out.println("Collection is initialized");
-				 return fill;	
-			 }
 	    } 
 	    return fill;
 	}	
+	
+	public int size() {
+		return this.monsterCollection.size();
+	}
 
 	/**
 	 * Method has printed information (type, size, initialization date) about collection
@@ -149,6 +128,15 @@ public class Collection {
 		String type = this.monsterCollection.getClass().getName();
 		int count = this.monsterCollection.size();
 		System.out.println("Type: " + type + "\nSize: " + count + "\nDate: " + this.date);
+	}
+	
+	public void remove(int id) {
+		Predicate<Monster> monsterPredecate = m -> m.id == id;
+		if(this.monsterCollection.removeIf(monsterPredecate)) {
+			FileWorker.write(this.path, this);
+			System.out.println("Monsters have been removed");
+		}
+		else System.out.println("Monsters haven't been removed");
 	}
 	
 /**
@@ -160,11 +148,12 @@ public class Collection {
 	public void removeGreater (int force) {
 		Predicate<Monster> monsterPredecate = m -> m.force.re() > force;
 		if (this.monsterCollection.removeIf(monsterPredecate)) {
-			saveToFile();
+			FileWorker.write(this.path, this);
 			System.out.println("Monsters have been removed");
 		}
 		else System.out.println("Monsters haven't been removed");	
 	}
+
 /**
  * Method will add transmitted element to the collection if its force is max.
  * @param m Monster
@@ -178,7 +167,7 @@ public class Collection {
 		if(monComp.compare(m1,m) < 0) {
 			max=true;
 			monsterCollection.add(m);
-			saveToFile();
+			FileWorker.write(this.path, this);
 			System.out.println(m.name + " was added to the collection");
 			return max;
 		}
@@ -203,7 +192,7 @@ public class Collection {
 		if(monComp.compare(m1,m) > 0) {
 			min=true;
 			monsterCollection.add(m);
-			saveToFile();
+			FileWorker.write(this.path, this);
 			System.out.println(m.name + " was added to the collection");
 			return min;
 		}
@@ -217,90 +206,32 @@ public class Collection {
  */
 	public void add(Monster m) {
 			monsterCollection.add(m);
-			saveToFile();
+			FileWorker.write(this.path, this);
 			System.out.println(m.name + " was added to the collection");
 	}
 	
-/**
- * Method saves collection to file
- */
-	public void saveToFile() {
-//		DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
-//	    DocumentBuilder dBuilder;
-//	    try {
-//	        dBuilder = dbFactory.newDocumentBuilder();
-//	        Document doc = dBuilder.newDocument();
-//	        Element rootElement =
-//	            doc.createElementNS("","Monsters");
-//	        doc.appendChild(rootElement);
-//	        int id = 1;
-//	        for(Monster m: monsterCollection) {
-//		        rootElement.appendChild(getMonster(doc, "" + id, m.getName(), "" + m.age , "" + m.health, "" + m.ordinariness, "" + (int)m.force.re(), "" + m.numberOfLife));
-//		        id++;
-//	        }
-//	       
-//	
-//	        TransformerFactory transformerFactory = TransformerFactory.newInstance();
-//	        Transformer transformer = transformerFactory.newTransformer();
-//	        transformer.setOutputProperty(OutputKeys.INDENT, "yes");
-//	        DOMSource source = new DOMSource(doc);
-//	
-//	        BufferedOutputStream bos = new BufferedOutputStream (new FileOutputStream(this.path));
-//	        ByteArrayOutputStream baos=new ByteArrayOutputStream();
-//	        StreamResult result=new StreamResult(bos);
-//	        transformer.transform(source, result);
-//	        byte []array=baos.toByteArray();
-//	        bos.write(array);
-//	        bos.flush();
-//	        
-//	        System.out.println("DONE");
-//	
-//	    } catch (Exception e) {
-//	        System.out.println(e.getLocalizedMessage());
-//	    }
+	public Monster getById(int id) {
+		for (Monster m: this.monsterCollection) {
+			if (m.id == id)
+				return m;
+		}
+		return null;	
+	}
+	
+	public String getMonsterName(Monster m) {
+		return m.name;
+	}
+	
+	public void save() {
+		FileWorker.write(this.path, this);
+	}
+	
+	public String getPath() {
+		return this.path;
+	}
+	
+	public Color getColor(Monster m) {
+		return m.color;
 	}
 
-///**
-// * Method forms element from the collection for saving it to file
-// * @param doc Object for building DOM tree
-// * @param id Monster's serial number
-// * @param name Monster's name
-// * @param age Monster's age
-// * @param health Monster's health 
-// * @param ordinariness Monster's ordinariness
-// * @param force Monster's force (real part)
-// * @param numberOfLife Monster's number of life
-// * @return Monster
-// */
-//	private Node getMonster(Document doc, String id, String name, String age, 
-//			String health, String ordinariness, 
-//			String force, String numberOfLife){
-//		Element monster = doc.createElement("Monster");
-//		 
-//		monster.setAttribute("id", id);
-// 
-//		monster.appendChild(getMonsterElements(doc, monster, "name", name));
-//		monster.appendChild(getMonsterElements(doc, monster, "age", age));
-//		monster.appendChild(getMonsterElements(doc, monster, "health", health));
-//		monster.appendChild(getMonsterElements(doc, monster, "ordinariness", ordinariness));
-//		monster.appendChild(getMonsterElements(doc, monster, "force", force));
-//		monster.appendChild(getMonsterElements(doc, monster, "numberOfLife", numberOfLife));
-// 
-//        return monster;
-//	}
-	
-///**
-// * Method forms line with one parameter of element
-// * @param doc Object for building DOM tree 
-// * @param element Monster
-// * @param name Key 
-// * @param value Value
-// * @return Monster's element
-// */
-//
-//	private static Node getMonsterElements(Document doc, Element element, String name, String value) {
-//		Element node = doc.createElement(name);
-//        node.appendChild(doc.createTextNode(value));
-//        return node;
-//    }
 }

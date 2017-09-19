@@ -72,11 +72,15 @@ public class MonstersListUI extends JFrame {
 					return Integer.class;
 				}
 			}
+			
+			 @Override
+			    public boolean isCellEditable(int i, int i1) {
+			        return false;
+			    }
 		};
-
+		
 		JTable table = new JTable(model);
-
-		// TableRowSorter<TableModel>
+		
 		sorter = new TableRowSorter<DefaultTableModel>(model);
 		table.setRowSorter(sorter);
 		table.setFillsViewportHeight(true);
@@ -173,6 +177,7 @@ public class MonstersListUI extends JFrame {
 						.addGroup(layout.createSequentialGroup().addComponent(removeGreater).addComponent(add)
 								.addComponent(delete).addComponent(update).addComponent(filtr))));
 	}
+	
 
 	static void setData(String path) {
 		if (path == null) {

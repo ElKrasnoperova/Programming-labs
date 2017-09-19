@@ -181,7 +181,7 @@ public class ActionsUI extends JFrame {
 			addIfMax.setVisible(false);
 			addIfMin.setVisible(false);
 			update.setVisible(true);
-			Monster m = c.getById(realId);
+			Monster m = c.getById(realRow + 1);
 			currentColor = c.getColor(m);
 
 			nameField.setText(m.name);

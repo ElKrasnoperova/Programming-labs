@@ -1,4 +1,5 @@
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
@@ -17,6 +18,7 @@ import javax.swing.JFrame;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.RowFilter;
+import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
@@ -188,6 +190,7 @@ public class MonstersListUI extends JFrame {
 		for (Monster m : c.getMColletion()) {
 			Object[] element = { m.id, m.name, m.age, Integer.valueOf((int) m.force.re()), m.ordinariness, m.health,
 					m.numberOfLife, m.color.getRGB() };
+		
 			obj[i] = element;
 			i++;
 		}

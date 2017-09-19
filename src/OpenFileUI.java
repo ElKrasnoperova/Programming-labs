@@ -54,7 +54,7 @@ public class OpenFileUI extends JFrame {
 		
 		BufferedImage image = null;
 		try {
-			image = ImageIO.read(new File("C:\\Users\\May\\Desktop\\MonsterPicture.jpg"));
+			image = ImageIO.read(new File("MonsterPicture.jpg"));
 		} catch (IOException e1) {
 			e1.printStackTrace();
 		}

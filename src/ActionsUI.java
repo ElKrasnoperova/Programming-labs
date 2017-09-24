@@ -247,7 +247,7 @@ public class ActionsUI extends JFrame {
 								.addComponent(numberOfLife)
 								.addComponent(color)
 								.addComponent(mistake)))
-				.addGroup(layout.createSequentialGroup()
+//				.addGroup(layout.createSequentialGroup()
 						.addGroup(layout.createParallelGroup(LEADING)
 								.addComponent(nameField)
 								.addComponent(ageField)
@@ -260,7 +260,7 @@ public class ActionsUI extends JFrame {
 										.addComponent(add)
 										.addComponent(addIfMin)
 										.addComponent(addIfMax)
-										.addComponent(update)))));
+										.addComponent(update))));
 	}
 	boolean checkNumberField(String ...input ) {
 		Pattern pattern = Pattern.compile("[0-9]{1,}");

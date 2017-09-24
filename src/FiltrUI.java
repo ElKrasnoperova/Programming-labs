@@ -3,6 +3,7 @@ import java.awt.Dimension;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.regex.Pattern;
 
 import javax.swing.GroupLayout;
 import javax.swing.JButton;
@@ -185,14 +186,11 @@ public class FiltrUI extends JFrame {
 	}
 	
 	private void newFilter(int column, String value) {
-		int columnId;
-		System.out.println(""+column +" "+ value);
-	    RowFilter<DefaultTableModel, Object> rowFilter = null;
-	    try {
-	    	rowFilter = RowFilter.regexFilter(value, column);
-	    } catch (java.util.regex.PatternSyntaxException e) {
-	        return;
-	    }
-	    sorter.setRowFilter(rowFilter);
+		String text = Pattern.quote(value);
+		String regex = String.format("^%s$", text);
+        sorter.setRowFilter(RowFilter.regexFilter(regex, column));
+        if (value.equals("")) {
+        	sorter.setRowFilter(RowFilter.regexFilter("", column));
+        }
 	}
 }

@@ -14,8 +14,6 @@ public Component getTableCellRendererComponent(JTable table,
                                                int column) {
    Component cell = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
    String cellvalue = value.toString();
-//   Integer.valueOf(cellvalue);
-//   cell.setBackground(Color.getColor(cellvalue));
    if(column == 7) {
 	   cell.setBackground(new Color(Integer.valueOf(cellvalue)));
    }

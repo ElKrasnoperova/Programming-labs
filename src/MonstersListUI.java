@@ -31,7 +31,6 @@ public class MonstersListUI extends JFrame {
 	private Toolkit toolkit;
 
 	private static Collection c;
-//	 private static final String TESTPATH = "C:\\workspace\\Monsters2 Ч копи€.xml";
 
 	int realRow;
 	int realId;
@@ -48,10 +47,6 @@ public class MonstersListUI extends JFrame {
 		setTitle("Monsters list");
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		setResizable(false);
-//		 c.setPath(TESTPATH);
-//		if (!c.fill()) {
-//			return;
-//		};
 
 		toolkit = getToolkit();
 		Dimension size = toolkit.getScreenSize();
@@ -83,12 +78,7 @@ public class MonstersListUI extends JFrame {
 		
 		JTable table = new JTable(model);
 		table.setDefaultRenderer(Object.class, new Renderer());
-//		boolean isSelected = table.isCellSelected(1, 1);
-//        DefaultTableCellRenderer defRender = (DefaultTableCellRenderer) table.getCellRenderer(7, 7);
-//        Component cellRenderer = defRender.getTableCellRendererComponent(table, "-1", false, false, 7, 7);
-//        cellRenderer.setBackground(Color.blue);
-		
-//		String cellvalue = table.getValueAt(1, table.getColumnModel().getColumnIndex("1")).toString();
+
 		
 		sorter = new TableRowSorter<DefaultTableModel>(model);
 		table.setRowSorter(sorter);
@@ -203,9 +193,4 @@ public class MonstersListUI extends JFrame {
 		}
 		data = obj;
 	}
-
-//	public static void main(String[] args) {
-//		MonstersListUI ml = new MonstersListUI();
-//		ml.setVisible(true);
-//	}
 }
